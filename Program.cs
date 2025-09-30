@@ -18,8 +18,15 @@ class Program
 
     Program()
     {
+        //Instructions are also in the ReadMe file,
+        //Before running the code,
+        //Change the file paths that's in the DataLoaderxx functions to the corresponding filepaths of human and non human.
+        //Uncomment the architecture to test
+        // Run the code for the first time
+        // The second time the code is ran, go to the architecture function and comment out the data.LoadAndSave(){ Reason is in the ReadMe file}
+        
         //AlexNetArch();
-        ResNetArch();
+        //ResNetArch();
     }
     public void AlexNetArch()
     {
@@ -27,7 +34,7 @@ class Program
         float eta = 0.01f;//0.00001f;//0.01f;//
         Console.WriteLine("Loading Images....");
         data = new ImageDataLoaderxx();
-        //data.LoadAndSave();
+        data.LoadAndSave();
 
         data.LoadFromSaved();
         Console.WriteLine("Image Loading Complete");
@@ -41,7 +48,7 @@ class Program
 
         var mynn = new AlexNet(data.NrClasses);
         var loss = nn.NLLLoss();
-        var optimizer = torch.optim.SGD(mynn.parameters(), eta);//torch.optim.Adam(mynn.parameters(), eta);//torch.optim.RMSProp(mynn.parameters(), eta);//
+        var optimizer = torch.optim.SGD(mynn.parameters(), eta);
         mynn.eval();
         var validerror = loss.forward(mynn.forward(data.ztest).log(), ttestIndexed);
         mynn.train();
@@ -125,7 +132,7 @@ class Program
 
         var mynn = new ResNet(data.NrClasses);
         var loss = nn.NLLLoss();
-        var optimizer = torch.optim.SGD(mynn.parameters(), eta);//torch.optim.Adam(mynn.parameters(), eta);//torch.optim.RMSProp(mynn.parameters(), eta);//
+        var optimizer = torch.optim.SGD(mynn.parameters(), eta);
         mynn.eval();
         var validerror = loss.forward(mynn.forward(data.ztest).log(), ttestIndexed);
         mynn.train();
@@ -231,7 +238,7 @@ public class AlexNet : nn.Module<Tensor, Tensor>
         dropout = nn.Dropout(0.1);
         lin2 = nn.Linear(1000, 250);    //Originally nn.Linear(4096, 4096);            
         lin3 = nn.Linear(250, NrOutputs);   //Originally nn.Linear(4096, NrOutputs);
-        RegisterComponents();  //Call this to include submodule parameters in module parameters
+        RegisterComponents();  
     }
 
     public override Tensor forward(Tensor input)
@@ -274,6 +281,7 @@ public class ImageDataLoader
 
     public void LoadAndSave()
     {
+        // Change this to the file path corresponding to images for human and non human.
         string[] classFolders = new string[]
         {
               @"C:\Users\th4te\OneDrive - Nelson Mandela University\A-NMU\4th Year\Semester 2\WRCV402\Assignment_6\human",
@@ -411,4 +419,5 @@ public class MCToolkit
         return bm;
 
     }
+
 }
